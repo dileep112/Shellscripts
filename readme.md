@@ -1,3 +1,4 @@
+
 To make the most of the provided Minikube installation shell script, 🚀 it's essential to address a few prerequisites first. Let's dive in! 👇
 
 Begin by provisioning an Ubuntu instance on AWS. Once the instance is up and running, establish an SSH connection to the machine and switch to the root user for administrative access. 🛠️
