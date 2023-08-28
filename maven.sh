@@ -31,3 +31,5 @@ if [ $? -eq 0 ]; then
 else
     echo "Maven installation failed"
 fi
+# The following command will remove the maven with all its dependencies
+# sudo apt-get purge maven
