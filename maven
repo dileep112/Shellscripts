@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Update the package repositories
+sudo dnf update -y
+
+# Install required packages
+sudo dnf install -y wget tar
+
+# Define the Maven version
+MAVEN_VERSION="3.8.4" # Update this to the latest version
+
+# Define the installation directory
+INSTALL_DIR="/opt"
+
+# Download and extract Maven
+cd /tmp
+wget "https://apache.osuosl.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz"
+sudo tar -xf "apache-maven-$MAVEN_VERSION-bin.tar.gz" -C "$INSTALL_DIR"
+
+# Create a symbolic link to the Maven installation
+sudo ln -s "$INSTALL_DIR/apache-maven-$MAVEN_VERSION" "$INSTALL_DIR/maven"
+
+# Set up environment variables
+echo "export MAVEN_HOME=$INSTALL_DIR/maven" | sudo tee -a /etc/profile.d/maven.sh
+echo "export PATH=\$PATH:\$MAVEN_HOME/bin" | sudo tee -a /etc/profile.d/maven.sh
+source /etc/profile.d/maven.sh
+
+# Clean up
+rm "/tmp/apache-maven-$MAVEN_VERSION-bin.tar.gz"
+
+# Print installation success message
+echo "Apache Maven $MAVEN_VERSION has been successfully installed."
+echo "You may need to start a new terminal session or run 'source /etc/profile.d/maven.sh' to use Maven."
