@@ -1,0 +1,105 @@
+#!/bin/bash
+
+USERID=$(id -u)
+
+if [ $USERID -ne 0 ]; then
+     echo "yun need to be a root user to execute this script"
+     exit1
+fi
+
+yum update -y
+
+if [ $? -ne 0 ]; then
+     echo "Updating yum is failure"
+     exit1
+else
+     echo "Updating yum is success"
+fi
+
+
+yum install java-17 -y
+
+if [ $? -ne 0 ]; then
+     echo "Installing Java-17 openjdk is failure"
+     exit1
+else
+     echo "Installing Java-17 openjdk is success"
+fi
+cd /opt/
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.1.69595.zip
+
+if [ $? -ne 0 ]; then
+     echo "Installing Sonar Qube is failure"
+     exit1
+else
+     echo "Installing Sonar Qube is success"
+fi
+
+unzip sonarqube-9.9.1.69595.zip
+
+if [ $? -ne 0 ]; then
+     echo "Unziping Sonar Qube is failure"
+     exit1
+else
+     echo "Unziping Sonar Qube is success"
+fi
+
+mv /opt/sonarqube-9.9.1.69595 /opt/sonarqube
+
+if [ $? -ne 0 ]; then
+     echo "Changing name Sonar Qube is failure"
+     exit1
+else
+     echo "Changing name Sonar Qube is success"
+fi
+
+useradd sonar1
+
+if [ $? -ne 0 ]; then
+     echo "Adding username Sonar is failure"
+     exit1
+else
+     echo "Adding username Sonar is success"
+fi
+
+chown -R sonar1:sonar1 /opt/sonarqube
+if [ $? -ne 0 ]; then
+     echo "Adding Owner to sonar is failure"
+     exit1
+else
+     echo "Adding Owner to sonar is success"
+fi
+
+chmod -R 775 /opt/sonarqube
+
+if [ $? -ne 0 ]; then
+     echo "Adding Permission to sonar is failure"
+     exit1
+else
+     echo "Adding Permission to sonar is success"
+fi
+
+su - sonar1
+if [ $? -ne 0 ]; then
+     echo "Changing root user to Sonar is failure"
+     exit1
+else
+     echo "Changing root user to Sonar is success"
+fi
+
+cd /opt/sonarqube/bin/linux-x86-64/
+sh sonar.sh start
+if [ $? -ne 0 ]; then
+     echo "Starting sonar is failure"
+     exit1
+else
+     echo "Starting sonar is success"
+fi
+
+sh sonar.sh status
+if [ $? -ne 0 ]; then
+     echo "Status sonar is failure"
+     exit1
+else
+     echo "Status sonar is success"
+fi
